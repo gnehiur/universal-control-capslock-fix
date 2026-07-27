@@ -42,7 +42,8 @@ local function stripCaps(e)
 end
 
 capsWatcher = hs.eventtap.new(
-  {types.flagsChanged, types.keyDown, types.keyUp},
+  {types.flagsChanged, types.keyDown, types.keyUp,
+   types.leftMouseDown, types.leftMouseUp, types.rightMouseDown, types.rightMouseUp},
   function(e)
     local kc = e:getKeyCode()
     if e:getType() == types.flagsChanged then
@@ -60,15 +61,21 @@ capsWatcher = hs.eventtap.new(
           end
         end
         if capsRelated or kc == 57 then
-          return true -- 吞掉,系统和输入法看不到大写锁定
+          if hs.hid.capslock.get() then
+            return true -- "大写开了"的消息吞掉,系统和输入法看不到
+          end
+          stripCaps(e)
+          return false -- "大写关了"的消息洗净放行,让界面撤掉蓝色大写角标
         end
       end
       stripCaps(e)
       return false
     end
-    -- keyDown / keyUp
-    if kc == 57 then return true end -- 大写锁定键本体也吞掉
-    stripCaps(e) -- 剥掉大写标志,底层状态开着也照常打小写(要大写按住 Shift)
+    -- keyDown / keyUp / 鼠标点击
+    if kc == 57 then return true end -- 大写锁定键本体吞掉
+    -- 剥掉大写标志:打字永远小写(要大写按住 Shift);
+    -- 鼠标点击也携带该标志,一并剥掉,防止点进输入框时点亮大写角标
+    stripCaps(e)
     return false
   end)
 capsWatcher:start()
