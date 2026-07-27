@@ -69,13 +69,9 @@ brew install --cask hammerspoon
 
 **3. 授权**：启动 Hammerspoon，在 系统设置 → 隐私与安全性 → 辅助功能 中允许 Hammerspoon（eventtap 必需），然后点菜单栏图标 → Reload Config。
 
-**4. 开机自启（可选）**：把 `org.hammerspoon.autostart.plist` 放到 `~/Library/LaunchAgents/` 并执行：
+**4. 开机自启（可选）**：勾选 Hammerspoon 偏好设置里的 "Launch Hammerspoon at login"，或在 Hammerspoon Console 执行一次 `hs.autoLaunch(true)`。
 
-```bash
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/org.hammerspoon.autostart.plist
-```
-
-（用了这个就不要再勾 Hammerspoon 自带的 "Launch at login"，会重复。）
+> 不建议用 `open -a Hammerspoon` 之类的 LaunchAgent 实现自启：macOS 会把它登记成大众脸的 "open"，"后台活动"通知每次重启都会重新弹一遍，很烦。用 Hammerspoon 自带的登录启动则以应用本尊的名义注册，安静得多。
 
 ## 自定义
 
