@@ -1,6 +1,6 @@
 -- universal-control-capslock-fix v8
 -- 修复 macOS 通用控制下中/英键(Caps Lock)无法切换输入法的问题。原理见 README。
--- https://github.com/jncdke/universal-control-capslock-fix
+-- https://github.com/gnehiur/universal-control-capslock-fix
 --
 -- 铁律: 通用控制自己记着大写状态,被控端活跃期绝不许写,
 --       任何按键动作进行中的 capslock.set() 都会引发"重新同步风暴"。
